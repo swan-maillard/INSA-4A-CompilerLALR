@@ -3,6 +3,7 @@
 #include <iostream>
 
 Automate::Automate(std::string s) : lexer(s) {
+    cout << "Calcul : " << s << endl; 
     State0 *state = new State0;
     statestack.push_back(state);
     lexer.Avancer();
@@ -12,8 +13,6 @@ void Automate::decalage(Symbole *s, State *e) {
     this->symbolstack.push_back(s);
     this->statestack.push_back(e);
     lexer.Avancer();
-    cout << "deca";
-    lexer.Consulter()->Affiche();
     e->transition(*this, lexer.Consulter());
 }
 void Automate::transitionSimple(Symbole *s, State *e) {
@@ -28,7 +27,12 @@ void Automate::reduction(int n, Symbole *s) {
     }
     statestack.back()->transition(*this, s);
 }
-void Automate::accepter() { statestack.back()->print(); }
+void Automate::accepter() { 
+    cout << "Résultat : " << ((Expr*)symbolstack.back())->getVal() << endl;
+}
+void Automate::invalid() {
+    cout << "Ce calcul est invalide" << endl;
+}
 
 Symbole *Automate::popSymbol() {
     Symbole *s = symbolstack.back();

@@ -11,6 +11,7 @@ public:
     void transitionSimple(Symbole *s, State *e);
     void reduction(int n, Symbole *s);
     void accepter();
+    void invalid();
     Symbole *popSymbol();
     void popAndDestroySymbol();
 

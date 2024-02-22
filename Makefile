@@ -1,5 +1,5 @@
 all:
-	g++ -Iinclude src/*.cpp
+	g++ -Iinclude -Werror src/*.cpp
 
 run: all
 	./a.out

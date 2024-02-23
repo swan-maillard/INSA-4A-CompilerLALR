@@ -8,9 +8,9 @@
 class Automate {
 public:
     Automate(std::string s);
-    void decalage(Symbole *s, State *e);
-    void transitionSimple(Symbole *s, State *e);
-    void reduction(int n, Symbole *s);
+    void decalage(std::unique_ptr<Symbole> s, State *e);
+    void transitionSimple(std::unique_ptr<Symbole> s, State *e);
+    void reduction(int n, std::unique_ptr<Symbole> s);
     void accepter();
     void invalid();
     std::unique_ptr<Symbole> popSymbol();

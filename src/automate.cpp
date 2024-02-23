@@ -9,7 +9,7 @@ Automate::Automate(std::string s) : lexer(s) {
     statestack.push_back(std::make_unique<State0>());
     lexer.Avancer();
     statestack.back()->transition(*this, lexer.Consulter());
-};
+}
 void Automate::decalage(Symbole *s, State *e) {
     this->symbolstack.push_back(std::unique_ptr<Symbole>(s));
     this->statestack.push_back(std::unique_ptr<State>(e));

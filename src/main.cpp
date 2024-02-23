@@ -6,12 +6,11 @@
 #include <memory>
 
 int main(void) {
-    // string chaine("(1+34)*123");
     std::string chaine;
     while (1) {
         std::cout << ">>";
         getline(std::cin, chaine);
-        if (chaine == "q") {
+        if (chaine == "q" || std::cin.eof()) {
             break;
         }
         Automate automate(chaine);

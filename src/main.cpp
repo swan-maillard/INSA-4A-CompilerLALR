@@ -14,6 +14,7 @@ int main(void) {
             break;
         }
         Automate automate(chaine);
+        automate.run();
     };
     std::cout << "bye\n";
     return 0;

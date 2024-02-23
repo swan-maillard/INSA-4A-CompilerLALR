@@ -7,7 +7,8 @@
 #include <vector>
 class Automate {
 public:
-    Automate(std::string s);
+    Automate(std::string s) : lexer(s) {}
+    void run();
     void decalage(std::unique_ptr<Symbole> s, State *e);
     void transitionSimple(std::unique_ptr<Symbole> s, State *e);
     void reduction(int n, std::unique_ptr<Symbole> s);

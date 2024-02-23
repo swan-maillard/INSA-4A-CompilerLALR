@@ -1,9 +1,10 @@
 #include "automate.h"
+#include "expr.h"
 #include "symbole.h"
 #include <iostream>
+#include <iterator>
 
 Automate::Automate(std::string s) : lexer(s) {
-    cout << "Calcul : " << s << endl; 
     State0 *state = new State0;
     statestack.push_back(state);
     lexer.Avancer();
@@ -27,12 +28,12 @@ void Automate::reduction(int n, Symbole *s) {
     }
     statestack.back()->transition(*this, s);
 }
-void Automate::accepter() { 
-    cout << "Résultat : " << ((Expr*)symbolstack.back())->getVal() << endl;
+void Automate::accepter() {
+    Expr *expr = (Expr *)symbolstack.back();
+    expr->Affiche();
+    cout << " = " << expr->eval() << endl;
 }
-void Automate::invalid() {
-    cout << "Ce calcul est invalide" << endl;
-}
+void Automate::invalid() { cout << "Ce calcul est invalide" << endl; }
 
 Symbole *Automate::popSymbol() {
     Symbole *s = symbolstack.back();

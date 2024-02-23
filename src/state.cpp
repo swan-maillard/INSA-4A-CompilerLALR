@@ -1,5 +1,6 @@
 
 #include "automate.h"
+#include "expr.h"
 #include "state.h"
 #include "symbole.h"
 #include <iostream>
@@ -64,8 +65,12 @@ bool State3::transition(Automate &automate, Symbole *s) {
     case MULT:
     case CLOSEPAR:
     case FIN:
+        // automate.reduction(
+        //     1, new Expr(((Entier *)automate.popSymbol())->getVal()));
         automate.reduction(
-            1, new Expr(((Entier *)automate.popSymbol())->getVal()));
+            1,
+            new ValExpr(
+                unique_ptr<Entier>((Entier *)automate.popSymbol())->getVal()));
         break;
     default:
         automate.invalid();
@@ -125,16 +130,16 @@ bool State6::transition(Automate &automate, Symbole *s) {
 }
 
 bool State7::transition(Automate &automate, Symbole *s) {
-    int left;
-    int right;
+    Expr *left;
+    Expr *right;
     switch (*s) {
     case PLUS:
     case CLOSEPAR:
     case FIN:
-        left = unique_ptr<Expr>((Expr *)automate.popSymbol())->getVal();
+        right = (Expr *)automate.popSymbol();
         automate.popAndDestroySymbol();
-        right = unique_ptr<Expr>((Expr *)automate.popSymbol())->getVal();
-        automate.reduction(3, new Expr(left + right));
+        left = (Expr *)automate.popSymbol();
+        automate.reduction(3, new AddExpr(left, right));
         break;
     case MULT:
         automate.decalage(s, new State5);
@@ -146,17 +151,17 @@ bool State7::transition(Automate &automate, Symbole *s) {
 }
 
 bool State8::transition(Automate &automate, Symbole *s) {
-    int left;
-    int right;
+    Expr *left;
+    Expr *right;
     switch (*s) {
     case PLUS:
     case CLOSEPAR:
     case MULT:
     case FIN:
-        left = unique_ptr<Expr>((Expr *)automate.popSymbol())->getVal();
+        right = (Expr *)automate.popSymbol();
         automate.popAndDestroySymbol();
-        right = unique_ptr<Expr>((Expr *)automate.popSymbol())->getVal();
-        automate.reduction(3, new Expr(left * right));
+        left = (Expr *)automate.popSymbol();
+        automate.reduction(3, new MulExpr(left, right));
         break;
     default:
         automate.invalid();

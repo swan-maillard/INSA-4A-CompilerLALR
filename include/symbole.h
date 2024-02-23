@@ -29,14 +29,3 @@ public:
 protected:
     int valeur;
 };
-
-class Expr : public Symbole {
-public:
-    Expr(int v) : Symbole(EXPR), valeur(v) {}
-    ~Expr() {}
-    virtual void Affiche();
-    int getVal();
-
-protected:
-    int valeur;
-};

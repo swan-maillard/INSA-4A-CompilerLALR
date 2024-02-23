@@ -1,11 +1,11 @@
 #include "symbole.h"
 #include <iostream>
 
-void Symbole::Affiche() { cout << Etiquettes[ident]; }
+void Symbole::Affiche() { std::cout << Etiquettes[ident]; }
 
 void Entier::Affiche() {
     Symbole::Affiche();
-    cout << "(" << valeur << ")";
+    std::cout << "(" << valeur << ")";
 }
 
 int Entier::getVal() { return this->valeur; }

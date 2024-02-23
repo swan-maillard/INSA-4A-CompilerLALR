@@ -1,12 +1,11 @@
 #pragma once
 
 #include <string>
-using namespace std;
 
 enum Identificateurs { OPENPAR, CLOSEPAR, PLUS, MULT, INT, FIN, ERREUR, EXPR };
 
-const string Etiquettes[] = {"OPENPAR", "CLOSEPAR", "PLUS",   "MULT",
-                             "INT",     "FIN",      "ERREUR", "EXPR"};
+const std::string Etiquettes[] = {"OPENPAR", "CLOSEPAR", "PLUS",   "MULT",
+                                  "INT",     "FIN",      "ERREUR", "EXPR"};
 
 class Symbole {
 public:

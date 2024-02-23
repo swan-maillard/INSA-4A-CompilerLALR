@@ -7,15 +7,15 @@
 
 int main(void) {
     // string chaine("(1+34)*123");
-    string chaine;
+    std::string chaine;
     while (1) {
-        cout << ">>";
-        getline(cin, chaine);
+        std::cout << ">>";
+        getline(std::cin, chaine);
         if (chaine == "q") {
             break;
         }
         Automate automate(chaine);
     };
-    cout << "bye\n";
+    std::cout << "bye\n";
     return 0;
 }

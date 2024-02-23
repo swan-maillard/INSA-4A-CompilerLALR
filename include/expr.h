@@ -22,23 +22,26 @@ protected:
 
 class BinOp : public Expr {
 public:
-    BinOp(Expr *left, Expr *right) : left(left), right(right) {}
+    BinOp(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
+        : left(std::move(left)), right(std::move(right)) {}
 
 protected:
-    unique_ptr<Expr> left;
-    unique_ptr<Expr> right;
+    std::unique_ptr<Expr> left;
+    std::unique_ptr<Expr> right;
 };
 
 class AddExpr : public BinOp {
 public:
-    AddExpr(Expr *left, Expr *right) : BinOp(left, right) {}
+    AddExpr(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
+        : BinOp(std::move(left), std::move(right)) {}
     virtual void Affiche();
     virtual int eval() const;
 };
 
 class MulExpr : public BinOp {
 public:
-    MulExpr(Expr *left, Expr *right) : BinOp(left, right) {}
+    MulExpr(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
+        : BinOp(std::move(left), std::move(right)) {}
     virtual void Affiche();
     virtual int eval() const;
 };

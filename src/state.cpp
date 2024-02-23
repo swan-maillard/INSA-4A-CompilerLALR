@@ -60,6 +60,7 @@ bool State2::transition(Automate &automate, Symbole *s) {
 }
 
 bool State3::transition(Automate &automate, Symbole *s) {
+    std::unique_ptr<Entier> entier;
     switch (*s) {
     case PLUS:
     case MULT:
@@ -67,10 +68,12 @@ bool State3::transition(Automate &automate, Symbole *s) {
     case FIN:
         // automate.reduction(
         //     1, new Expr(((Entier *)automate.popSymbol())->getVal()));
-        automate.reduction(
-            1,
-            new ValExpr(
-                unique_ptr<Entier>((Entier *)automate.popSymbol())->getVal()));
+        // automate.reduction(1, new ValExpr(std::unique_ptr<Entier>(
+        //                                       (Entier *)automate.popSymbol())
+        //                                       ->getVal()));
+        entier = std::unique_ptr<Entier>(
+            dynamic_cast<Entier *>(automate.popSymbol().release()));
+        automate.reduction(1, new ValExpr(entier->getVal()));
         break;
     default:
         automate.invalid();
@@ -130,16 +133,19 @@ bool State6::transition(Automate &automate, Symbole *s) {
 }
 
 bool State7::transition(Automate &automate, Symbole *s) {
-    Expr *left;
-    Expr *right;
+    std::unique_ptr<Expr> left;
+    std::unique_ptr<Expr> right;
     switch (*s) {
     case PLUS:
     case CLOSEPAR:
     case FIN:
-        right = (Expr *)automate.popSymbol();
+        // right = automate.popSymbol();
+        right = std::unique_ptr<Expr>(
+            dynamic_cast<Expr *>(automate.popSymbol().release()));
         automate.popAndDestroySymbol();
-        left = (Expr *)automate.popSymbol();
-        automate.reduction(3, new AddExpr(left, right));
+        left = std::unique_ptr<Expr>(
+            dynamic_cast<Expr *>(automate.popSymbol().release()));
+        automate.reduction(3, new AddExpr(std::move(left), std::move(right)));
         break;
     case MULT:
         automate.decalage(s, new State5);
@@ -151,17 +157,25 @@ bool State7::transition(Automate &automate, Symbole *s) {
 }
 
 bool State8::transition(Automate &automate, Symbole *s) {
-    Expr *left;
-    Expr *right;
+    // Expr *left;
+    // Expr *right;
+    std::unique_ptr<Expr> left;
+    std::unique_ptr<Expr> right;
     switch (*s) {
     case PLUS:
     case CLOSEPAR:
     case MULT:
     case FIN:
-        right = (Expr *)automate.popSymbol();
+        // right = (Expr *)automate.popSymbol();
+        // automate.popAndDestroySymbol();
+        // left = (Expr *)automate.popSymbol();
+        // automate.reduction(3, new MulExpr(left, right));
+        right = std::unique_ptr<Expr>(
+            dynamic_cast<Expr *>(automate.popSymbol().release()));
         automate.popAndDestroySymbol();
-        left = (Expr *)automate.popSymbol();
-        automate.reduction(3, new MulExpr(left, right));
+        left = std::unique_ptr<Expr>(
+            dynamic_cast<Expr *>(automate.popSymbol().release()));
+        automate.reduction(3, new MulExpr(std::move(left), std::move(right)));
         break;
     default:
         automate.invalid();
@@ -170,16 +184,17 @@ bool State8::transition(Automate &automate, Symbole *s) {
 }
 
 bool State9::transition(Automate &automate, Symbole *s) {
-    Expr *val;
+    std::unique_ptr<Expr> val;
     switch (*s) {
     case PLUS:
     case CLOSEPAR:
     case MULT:
     case FIN:
         automate.popAndDestroySymbol();
-        val = (Expr *)automate.popSymbol();
+        val = std::unique_ptr<Expr>(
+            dynamic_cast<Expr *>(automate.popSymbol().release()));
         automate.popAndDestroySymbol();
-        automate.reduction(3, val);
+        automate.reduction(3, val.release());
         break;
     default:
         automate.invalid();

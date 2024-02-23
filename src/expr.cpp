@@ -1,26 +1,26 @@
 #include "expr.h"
 #include <iostream>
 
-void ValExpr::Affiche() { cout << this->val; }
+void ValExpr::Affiche() { std::cout << this->val; }
 
 int ValExpr::eval() const { return this->val; }
 
 void AddExpr::Affiche() {
-    cout << "(";
+    std::cout << "(";
     this->left->Affiche();
-    cout << "+";
+    std::cout << "+";
     this->right->Affiche();
-    cout << ")";
+    std::cout << ")";
 }
 
 int AddExpr::eval() const { return this->left->eval() + this->right->eval(); }
 
 void MulExpr::Affiche() {
-    cout << "(";
+    std::cout << "(";
     this->left->Affiche();
-    cout << "*";
+    std::cout << "*";
     this->right->Affiche();
-    cout << ")";
+    std::cout << ")";
 }
 
 int MulExpr::eval() const { return this->left->eval() * this->right->eval(); }

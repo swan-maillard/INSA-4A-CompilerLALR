@@ -8,7 +8,7 @@
 int main(void) {
     std::string chaine;
     while (1) {
-        std::cout << ">>";
+        std::cout << ">>> ";
         getline(std::cin, chaine);
         if (chaine == "q" || std::cin.eof()) {
             break;

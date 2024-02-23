@@ -13,7 +13,7 @@ int main(void) {
         if (chaine == "q" || std::cin.eof()) {
             break;
         }
-        Automate automate(chaine);
+        Automate automate(std::move(chaine));
         automate.run();
     };
     std::cout << "bye\n";

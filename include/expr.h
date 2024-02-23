@@ -5,14 +5,16 @@
 
 class Expr : public Symbole {
 public:
-    Expr() : Symbole(EXPR) {}
+    Expr(int spanStart, int spanEnd) : Symbole(EXPR, spanStart, spanEnd) {}
     ~Expr() {}
     virtual int eval() const = 0;
 };
 
 class ValExpr : public Expr {
 public:
-    ValExpr(int val) : val(val){};
+    ValExpr(std::unique_ptr<Entier> val)
+        : Expr(val->getSpan().first, val->getSpan().second),
+          val(val->getVal()){};
     virtual void Affiche();
     virtual int eval() const;
 
@@ -22,8 +24,7 @@ protected:
 
 class BinOp : public Expr {
 public:
-    BinOp(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
-        : left(std::move(left)), right(std::move(right)) {}
+    BinOp(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right);
 
 protected:
     std::unique_ptr<Expr> left;

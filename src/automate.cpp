@@ -48,6 +48,18 @@ void Automate::accepter() {
 
 void Automate::invalid() { std::cout << "Ce calcul est invalide" << std::endl; }
 
+void Automate::error(const Symbole &symbole) const {
+    std::cout << lexer.getString() << '\n';
+    for (int i = 0; i <= symbole.getSpan().second; ++i) {
+        if (i < symbole.getSpan().first) {
+            std::cout << ' ';
+        } else {
+            std::cout << '^';
+        }
+    }
+    std::cout << '\n';
+}
+
 std::unique_ptr<Symbole> Automate::popSymbol() {
     auto s = std::move(symbolstack.back());
     symbolstack.pop_back();

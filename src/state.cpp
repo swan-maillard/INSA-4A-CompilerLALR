@@ -20,7 +20,10 @@ bool State0::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.transitionSimple(std::move(s), new State1);
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        // automate.invalid();
+        std::cout << "Expected \"value\" or \"(\", but found \"" << Repr[*s]
+                  << "\"\n";
     }
     return false;
 }
@@ -37,7 +40,9 @@ bool State1::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.accepter();
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \"*\" or nothing, but found \""
+                  << Repr[*s] << "\"\n";
     }
     return false;
 }
@@ -54,7 +59,9 @@ bool State2::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.transitionSimple(std::move(s), new State6);
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"val\" or \"(\" but found \"" << Repr[*s]
+                  << "\"\n";
     }
     return false;
 }
@@ -69,10 +76,12 @@ bool State3::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         (void)s.release();
         entier = std::unique_ptr<Entier>(
             dynamic_cast<Entier *>(automate.popSymbol().release()));
-        automate.reduction(1, std::make_unique<ValExpr>(entier->getVal()));
+        automate.reduction(1, std::make_unique<ValExpr>(std::move(entier)));
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \"*\" or \")\" or nothing but found \""
+                  << Repr[*s] << "\"\n";
     }
     return false;
 }
@@ -89,7 +98,9 @@ bool State4::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.transitionSimple(std::move(s), new State7);
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"val\" or \"(\" but found \"" << Repr[*s]
+                  << "\"\n";
     }
     return false;
 }
@@ -106,6 +117,9 @@ bool State5::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.transitionSimple(std::move(s), new State8);
         break;
     default:
+        automate.error(*s);
+        std::cout << "Expected \"val\" or \"(\" but found \"" << Repr[*s]
+                  << "\"\n";
         automate.invalid();
     }
     return false;
@@ -123,7 +137,9 @@ bool State6::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.decalage(std::move(s), new State9);
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \")\" or \"*\" but found \"" << Repr[*s]
+                  << "\"\n";
     }
     return false;
 }
@@ -148,7 +164,9 @@ bool State7::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.decalage(std::move(s), new State5);
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \")\" or \"*\" or nothing but found \""
+                  << Repr[*s] << "\"\n";
     }
     return false;
 }
@@ -171,7 +189,9 @@ bool State8::transition(Automate &automate, std::unique_ptr<Symbole> s) {
             3, std::make_unique<MulExpr>(std::move(left), std::move(right)));
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \")\" or \"*\" or nothing but found \""
+                  << Repr[*s] << "\"\n";
     }
     return false;
 }
@@ -190,7 +210,9 @@ bool State9::transition(Automate &automate, std::unique_ptr<Symbole> s) {
         automate.reduction(3, std::move(in));
         break;
     default:
-        automate.invalid();
+        automate.error(*s);
+        std::cout << "Expected \"+\" or \")\" or \"*\" or nothing but found \""
+                  << Repr[*s] << "\"\n";
     }
     return false;
 }

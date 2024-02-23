@@ -12,6 +12,8 @@ public:
     Symbole *Consulter();
     void Avancer();
 
+    const std::string &getString() const;
+
 protected:
     std::string flux;
     int tete;
